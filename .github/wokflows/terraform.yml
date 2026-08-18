@@ -1,8 +1,6 @@
-name: Terraform CI
+name: Terraform
 
 on:
-  workflow_dispatch:
-
   pull_request:
     branches:
       - main
@@ -13,6 +11,9 @@ on:
 
 jobs:
 
+  # ==========================================
+  # TERRAFORM PLAN - PULL REQUEST
+  # ==========================================
   terraform-plan:
     name: Terraform Plan
     if: github.event_name == 'pull_request'
@@ -42,6 +43,9 @@ jobs:
         run: terraform plan
 
 
+  # ==========================================
+  # TERRAFORM APPLY - MAIN BRANCH
+  # ==========================================
   terraform-apply:
     name: Terraform Apply
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
