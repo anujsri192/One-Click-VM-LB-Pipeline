@@ -1,22 +1,28 @@
 name: Terraform
 
 on:
-  pull_request:
+  # Feature branch par push = PLAN
+  push:
     branches:
+      - feature/one-click-vm
       - main
 
-  push:
+  # PR to main = PLAN
+  pull_request:
     branches:
       - main
 
 jobs:
 
   # ==========================================
-  # TERRAFORM PLAN - PULL REQUEST
+  # TERRAFORM PLAN
   # ==========================================
   terraform-plan:
     name: Terraform Plan
-    if: github.event_name == 'pull_request'
+    if: |
+      github.event_name == 'pull_request' ||
+      github.ref == 'refs/heads/feature/one-click-vm' ||
+      github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
@@ -44,7 +50,7 @@ jobs:
 
 
   # ==========================================
-  # TERRAFORM APPLY - MAIN BRANCH
+  # TERRAFORM APPLY - MAIN ONLY
   # ==========================================
   terraform-apply:
     name: Terraform Apply
@@ -61,18 +67,6 @@ jobs:
       - name: Terraform Init
         working-directory: Environment/Pre-prod
         run: terraform init
-
-      - name: Terraform Format
-        working-directory: Environment/Pre-prod
-        run: terraform fmt -check
-
-      - name: Terraform Validate
-        working-directory: Environment/Pre-prod
-        run: terraform validate
-
-      - name: Terraform Plan
-        working-directory: Environment/Pre-prod
-        run: terraform plan
 
       - name: Terraform Apply
         working-directory: Environment/Pre-prod
