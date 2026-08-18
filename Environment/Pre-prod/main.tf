@@ -34,7 +34,7 @@ module "bastion" {
 }
 
 module "load_balancer" {
-  depends_on    = [module.virtual_machine, module.public_ip]
-  source        = "../../Child_Modules/Azurerm_Load_Balancer"
-  lbs           = var.lbs
+  depends_on = [module.virtual_machine, module.public_ip]
+  source     = "../../Child_Modules/Azurerm_Load_Balancer"
+  lbs        = var.lbs
 }
